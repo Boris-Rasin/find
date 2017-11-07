@@ -102,7 +102,7 @@ public:
 	operator typename C::const_iterator () const { return i; }
 
 	auto operator -> () const { return &extract<C>::value(i); }
-	auto operator * () const { return extract<C>::value(i); }
+	auto& operator * () const { return extract<C>::value(i); }
 
 	conditional_iterator operator ! () const { return { i, !condition }; }
 
