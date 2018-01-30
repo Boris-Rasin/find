@@ -60,20 +60,23 @@ template <typename C, typename Iterator>
 class conditional_iterator
 {
 public:
-    conditional_iterator(Iterator i, bool condition)
-        : i(i), condition(condition) {}
+    conditional_iterator(Iterator iterator, bool condition)
+        : iterator_(iterator), condition_(condition) {}
 
-    explicit operator bool() const { return condition; }
-    operator typename C::const_iterator() const { return i; }
+    explicit operator bool() const { return condition_; }
+    bool condition() const { return condition_; }
 
-    auto operator-> () const { return &extract_value<C>(i); }
-    auto& operator*() const { return extract_value<C>(i); }
+    operator typename C::const_iterator() const { return iterator_; }
+    Iterator iterator() const { return iterator_; }
 
-    conditional_iterator operator!() const { return {i, !condition}; }
+    auto operator-> () const { return &extract_value<C>(iterator_); }
+    auto& operator*() const { return extract_value<C>(iterator_); }
+
+    conditional_iterator operator!() const { return {iterator_, !condition_}; }
 
 private:
-    Iterator i;
-    bool condition;
+    Iterator iterator_;
+    bool condition_;
 };
 
 template<typename T>
