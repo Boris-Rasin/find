@@ -1,5 +1,5 @@
 # find
-Advanced find() function for any container.
+Unified find() interface for all types of containers, with most efficient implementation for each type of container.
 Requires C++17 compiler.
 
 ```C++
@@ -26,6 +26,13 @@ if (auto i = !find(container, key))
     container.insert(i, expensive_value_construction());
 }
 ```
+
+#### Implementation:
+
+ - **Associative containers**: container.lower_bound(...), container.key_comp(...)
+ - **Unordered associative containers**: container.find(...)
+ - **Sequence containers**: std::find(container, ...)
+
 Tested with the following containers:
 
 ```C++
