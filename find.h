@@ -96,18 +96,25 @@ inline auto find(C& c, const Key& key)
     if constexpr (std::experimental::is_detected_v<detail::lower_bound_t, C>)
     {
         auto it = c.lower_bound(key);
-        return detail::conditional_iterator<C, decltype(c.lower_bound(key))> {it, it != c.end() && !(c.key_comp()(key, detail::extract_key(c, it)))};
+        return detail::conditional_iterator<C, decltype(it)> {it, it != c.end() && !(c.key_comp()(key, detail::extract_key(c, it)))};
     }
     else if constexpr (std::experimental::is_detected_v<detail::find_t, C>)
     {
         auto it = c.find(key);
-        return detail::conditional_iterator<C, decltype(c.find(key))> {it, it != c.end()};
+        return detail::conditional_iterator<C, decltype(it)> {it, it != c.end()};
     }
     else
     {
         auto it = std::find(std::begin(c), std::end(c), key);
-        return detail::conditional_iterator<C, decltype(std::find(std::begin(c), std::end(c), key))> {it, it != c.end()};
+        return detail::conditional_iterator<C, decltype(it)> {it, it != c.end()};
     }
+}
+
+template <typename C, typename Pred>
+inline auto find_if(C& c, Pred&& pred)
+{
+    auto it = std::find_if(std::begin(c), std::end(c), pred);
+    return detail::conditional_iterator<C, decltype(it)> {it, it != c.end()};
 }
 
 } // namespace sky
